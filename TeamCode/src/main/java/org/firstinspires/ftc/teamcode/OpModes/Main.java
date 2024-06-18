@@ -6,7 +6,7 @@ import org.firstinspires.ftc.teamcode.Subsystems.Drivebase;
 
 @TeleOp(name = "main")
 public class Main extends LinearOpMode {
-    private double SENSE = 0.05;
+    private final double SENSE = 0.05;
     
     private Drivebase drive;
 
