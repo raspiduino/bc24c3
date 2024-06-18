@@ -1,10 +1,12 @@
 package org.firstinspires.ftc.teamcode.Subsystems;
-//Stolen code from FtcRobotController/src/main/java/org/firstinspires/ftc/robotcontroller/external/samples/RobotAutoDriveByEncoder_Linear.java
+
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
+import static org.firstinspires.ftc.teamcode.Constants.BASE.*;
+import static org.firstinspires.ftc.teamcode.Constants.SPEED.*;
 
 public class AutoDrive {
     private final Drivebase drive;
@@ -12,15 +14,10 @@ public class AutoDrive {
     private final Telemetry telemetry;
     private final LinearOpMode opMode;
 
-    static final double COUNTS_PER_MOTOR_REV = 560;
-    static final double DRIVE_GEAR_REDUCTION = 1.0;     // No External Gearing.
-    static final double WHEEL_DIAMETER_INCHES = 3.54;     // For figuring circumference
-    static final double COUNTS_PER_INCH = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) / (WHEEL_DIAMETER_INCHES * 3.1415);
-
-    public AutoDrive(Drivebase drive, ElapsedTime runtime, Telemetry telemetry, LinearOpMode opMode) {
+    public AutoDrive(Drivebase drive, ElapsedTime runtime, LinearOpMode opMode) {
         this.drive = drive;
         this.runtime = runtime;
-        this.telemetry = telemetry;
+        this.telemetry = opMode.telemetry;
         this.opMode = opMode;
     }
 
@@ -41,8 +38,8 @@ public class AutoDrive {
 
             // reset the timeout time and start motion.
             runtime.reset();
-            drive.leftMotor.setPower(Math.abs(speed) * 95 / 100);
-            drive.rightMotor.setPower(Math.abs(speed) * 95 / 100);
+            drive.leftMotor.setPower(Math.abs(speed) * AUTO_MAX_SPEED);
+            drive.rightMotor.setPower(Math.abs(speed) * AUTO_MAX_SPEED);
 
             // keep looping while we are still active, and there is time left, and both motors are running.
             while (opMode.opModeIsActive() && (runtime.seconds() < timeoutS) && (drive.leftMotor.isBusy() && drive.rightMotor.isBusy())) {
