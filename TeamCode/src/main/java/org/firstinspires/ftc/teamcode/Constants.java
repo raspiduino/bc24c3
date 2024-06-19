@@ -14,6 +14,7 @@ public class Constants {
         public static final double BASE_SPEED = 0.6;
         public static final double LOCKER_ELEVATOR_SPEED = 0.3;
         public static final double LIFT_SPEED = 0.5;
+        public static final int CLIMB_TICKS = 2965;
     }
 
     public static class SENSE {

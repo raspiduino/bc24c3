@@ -7,8 +7,8 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
 
 public class DoubleMotorStructure {
-    private DcMotorEx left;
-    private DcMotorEx right;
+    public DcMotorEx left;
+    public DcMotorEx right;
 
     public void init(LinearOpMode opMode, String leftName, String rightName) {
         this.left = (DcMotorEx) opMode.hardwareMap.get(DcMotor.class, leftName);

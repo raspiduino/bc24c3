@@ -34,10 +34,6 @@ public class Drivebase {
         rightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         leftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         rightMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
-        // Get rid of drifting in auto???
-        leftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        rightMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     }
 
     public void setPowerToDrive(double ly, double rx) {
@@ -55,14 +51,13 @@ public class Drivebase {
         double color = 0.2126 * red + 0.7152 * green + 0.0722 * blue;
         return color > 128;
     }
-
+    //TODO: Use Kalman Filter to effectively predict if the robot has made contacted or not
     public boolean aboutToMakeContact() {
-        return distanceSensor.getDistance(DistanceUnit.CM) <= 10;
+        return distanceSensor.getDistance(DistanceUnit.CM) <= 15;
     }
 
     public double getHeading() {
         Orientation angles = imu.getRobotOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
         return angles.firstAngle * 180.0 / Math.PI;
     }
-
 }
