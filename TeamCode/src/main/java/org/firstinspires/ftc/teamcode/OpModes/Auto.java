@@ -19,7 +19,7 @@ public class Auto extends LinearOpMode {
 
         waitForStart();
         while (opModeIsActive()) {
-
+            continue;
         }
     }
 }

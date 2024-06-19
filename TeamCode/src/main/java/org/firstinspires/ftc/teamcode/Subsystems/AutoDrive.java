@@ -60,4 +60,19 @@ public class AutoDrive {
             opMode.sleep(250);   // optional pause after each move.
         }
     }
+    private void followLine() {
+        double heading = drive.getHeading();
+        if (drive.isWhite(drive.colorSensor)) {
+            // On white line
+            encoderDrive(BASE_SPEED, 2, 2, 1);
+        } else {
+            if(heading < 0) {
+                encoderDrive(BASE_SPEED, 1, 2, 1);
+            } else if (heading > 0) {
+                encoderDrive(BASE_SPEED, 2, 1, 1);
+            } else {
+                encoderDrive(BASE_SPEED,1 , 1, 0.5);
+            }
+        }
+    }
 }

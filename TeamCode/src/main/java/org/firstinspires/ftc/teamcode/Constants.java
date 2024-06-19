@@ -11,6 +11,7 @@ public class Constants {
     public static class SPEED {
         public static final double AUTO_MAX_SPEED = 95.0 / 100.0;
         public static final double TELE_MAX_SPEED = 0.6;
+        public static final double BASE_SPEED = 0.6;
     }
 
     public static class SENSE {

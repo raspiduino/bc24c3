@@ -21,9 +21,6 @@ public class Drivebase {
     public DistanceSensor   distanceSensor  = null;
     public IMU              imu             = null;
 
-    private double robotHeading  = 0;
-    private double headingOffset = 0;
-
     public Drivebase(HardwareMap hardwareMap) {
         leftMotor       = hardwareMap.get(DcMotor.class, "leftMotor");
         rightMotor      = hardwareMap.get(DcMotor.class, "rightMotor");
@@ -63,14 +60,9 @@ public class Drivebase {
         return distanceSensor.getDistance(DistanceUnit.CM) <= 10;
     }
 
-    public double getRawHeading() {
-        Orientation angles   = imu.getRobotOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-        return angles.firstAngle;
+    public double getHeading() {
+        Orientation angles = imu.getRobotOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+        return angles.firstAngle * 180.0 / Math.PI;
     }
 
-    public void resetHeading() {
-        // Save a new heading offset equal to the current raw heading.
-        headingOffset = getRawHeading();
-        robotHeading = 0;
-    }
 }
