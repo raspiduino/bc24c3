@@ -12,9 +12,12 @@ public class Constants {
         public static final double AUTO_MAX_SPEED = 95.0 / 100.0;
         public static final double TELE_MAX_SPEED = 0.6;
         public static final double BASE_SPEED = 0.6;
+        public static final double LOCKER_ELEVATOR_SPEED = 0.3;
+        public static final double LIFT_SPEED = 0.5;
     }
 
     public static class SENSE {
         public static final double JOYSTICK_SENSE = 0.05;
+        public static final float TRIGGER_SENSE = 0.2f;
     }
 }
