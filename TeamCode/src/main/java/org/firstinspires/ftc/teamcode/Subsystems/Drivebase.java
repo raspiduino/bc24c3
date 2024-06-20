@@ -1,9 +1,10 @@
 package org.firstinspires.ftc.teamcode.Subsystems;
 
-import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+
 import com.qualcomm.robotcore.hardware.ColorSensor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
-import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.IMU;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
@@ -12,38 +13,43 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
-import static org.firstinspires.ftc.teamcode.Constants.SPEED.*;
+import static org.firstinspires.ftc.teamcode.Constants.BASE.COUNTS_PER_INCH;
 
 public class Drivebase {
-    public DcMotor          leftMotor       = null;
-    public DcMotor          rightMotor      = null;
-    public ColorSensor      colorSensor     = null;
-    public DistanceSensor   distanceSensor  = null;
-    public IMU              imu             = null;
+    public DcMotorEx        leftMotor;
+    public DcMotorEx        rightMotor;
+    public ColorSensor      colorSensor;
+    public DistanceSensor   distanceSensor;
+    public IMU              imu;
 
-    public Drivebase(HardwareMap hardwareMap) {
-        leftMotor       = hardwareMap.get(DcMotor.class, "leftMotor");
-        rightMotor      = hardwareMap.get(DcMotor.class, "rightMotor");
-        colorSensor     = hardwareMap.get(ColorSensor.class, "colorsensor");
-        distanceSensor  = hardwareMap.get(DistanceSensor.class, "distancesensor");
-        imu             = hardwareMap.get(IMU.class, "imu");
+    public void init(LinearOpMode opMode,
+                String leftMotor,
+                String rightMotor,
+                String colorSensor,
+                String distanceSensor,
+                String imu) {
+        this.leftMotor       = (DcMotorEx)      opMode.hardwareMap.get(DcMotorEx.class, leftMotor);
+        this.rightMotor      = (DcMotorEx)      opMode.hardwareMap.get(DcMotorEx.class, rightMotor);
+        this.colorSensor     = (ColorSensor)    opMode.hardwareMap.get(ColorSensor.class, colorSensor);
+        this.distanceSensor  = (DistanceSensor) opMode.hardwareMap.get(DistanceSensor.class, distanceSensor);
+        this.imu             = (IMU)            opMode.hardwareMap.get(IMU.class, imu);
 
         // Set motors' direction and mode
-        leftMotor.setDirection(DcMotor.Direction.REVERSE);
-        leftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        rightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        leftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        rightMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        this.leftMotor.setDirection(DcMotorEx.Direction.REVERSE);
+
+        this.leftMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+        this.rightMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+        this.leftMotor.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+        this.rightMotor.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
     }
 
-    public void setPowerToDrive(double ly, double rx) {
+    public void setPowerToDrive(double ly, double rx, double max_speed) {
         double max = Math.max(Math.abs(ly) + Math.abs(rx), 1);
         double pLeft = (ly + rx) / max;
         double pRight = (ly - rx) / max;
-        leftMotor.setPower(pLeft * TELE_MAX_SPEED);
-        rightMotor.setPower(pRight * TELE_MAX_SPEED);
+        this.leftMotor.setPower(pLeft * max_speed);
+        this.rightMotor.setPower(pRight * max_speed);
     }
-
     public boolean isWhite(ColorSensor colorSensor) {
         double red = colorSensor.red();
         double green = colorSensor.green();
@@ -53,11 +59,13 @@ public class Drivebase {
     }
     //TODO: Use Kalman Filter to effectively predict if the robot has made contacted or not
     public boolean aboutToMakeContact() {
-        return distanceSensor.getDistance(DistanceUnit.CM) <= 15;
+        return this.distanceSensor.getDistance(DistanceUnit.CM) <= 15;
     }
-
     public double getHeading() {
-        Orientation angles = imu.getRobotOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+        Orientation angles = this.imu.getRobotOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
         return angles.firstAngle * 180.0 / Math.PI;
+    }
+    public double inchesToTicks(double cm) {
+        return (cm / 2.54) * COUNTS_PER_INCH;
     }
 }

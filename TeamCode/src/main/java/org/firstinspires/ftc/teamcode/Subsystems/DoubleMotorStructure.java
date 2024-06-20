@@ -40,6 +40,10 @@ public class DoubleMotorStructure {
         return (this.left.getCurrent(CurrentUnit.AMPS) + this.right.getCurrent(CurrentUnit.AMPS)) / 2;
     }
 
+    public int getPos() {
+        return (this.left.getCurrentPosition() + this.right.getCurrentPosition()) / 2;
+    }
+
     public void setPos(int left, int right) {
         this.left.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         this.right.setMode(DcMotor.RunMode.RUN_TO_POSITION);

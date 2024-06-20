@@ -1,5 +1,8 @@
 package org.firstinspires.ftc.teamcode;
 
+import static org.firstinspires.ftc.teamcode.Constants.SENSE.JOYSTICK_SENSE;
+import static org.firstinspires.ftc.teamcode.Constants.SENSE.TRIGGER_SENSE;
+
 public class Constants {
     public static class BASE {
         public static final double COUNTS_PER_MOTOR_REV = 560; // Encoder resolution
@@ -13,12 +16,22 @@ public class Constants {
         public static final double TELE_MAX_SPEED = 0.6;
         public static final double BASE_SPEED = 0.6;
         public static final double LOCKER_ELEVATOR_SPEED = 0.3;
-        public static final double LIFT_SPEED = 0.5;
-        public static final int CLIMB_TICKS = 2965;
+        public static final double LIFT_SPEED = 0.5; // TODO: tune
+        public static final double CLIMBER_SPEED = 0.5; // TODO: tune
     }
 
     public static class SENSE {
         public static final double JOYSTICK_SENSE = 0.05;
         public static final float TRIGGER_SENSE = 0.2f;
     }
+    public static class CLIMB {
+        public static final double CLIMBER_MIN_SPEED = 0; // tick per sec
+
+        // TODO: Change this from climb ticks to convert into ticks from inches
+        public static final int CLIMBER_MIN_TICKS = 2965;
+
+        // TODO: Measure max current when it gets stuck
+        public static final double CLIMBER_MAX_CURRENT = 5;
+    }
+
 }
