@@ -22,21 +22,27 @@ public class AutoDriveSystem extends Drivebase {
     }
 
     public void followLine() {
-        double heading = drive.getHeading();
-        // If Color Sensor still can detect the white line then keep going
-        if (drive.isWhite(drive.colorSensor)) {
-            encoderDrive.encoderDrive(BASE_SPEED, 2, 2, 1);
-        } else {
+        while (!drive.aboutToMakeContact()) {
+            double heading = drive.getHeading();
+            // If Color Sensor still can detect the white line then keep going
+            if (drive.isWhite(drive.colorSensor)) {
+                encoderDrive.encoderDrive(BASE_SPEED, 2, 2, 1);
+            } else {
             /* The white line is not detected, now we use IMU to find if the robot oversteered to the left or to the right
             The heading is reading data coming from the IMU if the value is 0 < x < 180 then it turned left and -180 < x < 0 is to the right */
-            if (heading < 0) {
-                encoderDrive.encoderDrive(BASE_SPEED, 1, 2, 1);
-            } else if (heading > 0) {
-                encoderDrive.encoderDrive(BASE_SPEED, 2, 1, 1);
-            } else {
-                encoderDrive.encoderDrive(BASE_SPEED, 1, 1, 0.5);
-                // TODO: A correction function to get the robot come back to the white line after placed horizontal wrong
+                if (heading < 0) {
+                    encoderDrive.encoderDrive(BASE_SPEED, 1, 2, 1);
+                } else if (heading > 0) {
+                    encoderDrive.encoderDrive(BASE_SPEED, 2, 1, 1);
+                } else {
+                    encoderDrive.encoderDrive(BASE_SPEED, 1, 1, 0.5);
+                    // TODO: A correction function to get the robot come back to the white line after placed horizontal wrong
+                }
             }
         }
+    }
+    //Stupidest move in the history of human beings
+    public void encoderDrive(double speed, double leftInches, double rightInches, double timeoutS) {
+        encoderDrive.encoderDrive(speed, leftInches, rightInches, timeoutS); // Example parameters
     }
 }

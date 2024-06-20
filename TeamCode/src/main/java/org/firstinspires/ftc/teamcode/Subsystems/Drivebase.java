@@ -14,7 +14,6 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
 import static org.firstinspires.ftc.teamcode.Constants.BASE.COUNTS_PER_INCH;
-import static org.firstinspires.ftc.teamcode.Constants.SPEED.*;
 
 public class Drivebase {
     public DcMotorEx        leftMotor;
@@ -67,6 +66,6 @@ public class Drivebase {
         return angles.firstAngle * 180.0 / Math.PI;
     }
     public double inchesToTicks(double cm) {
-        return (cm/2.54) * COUNTS_PER_INCH;
+        return (cm / 2.54) * COUNTS_PER_INCH;
     }
 }
