@@ -21,4 +21,7 @@ public class Constants {
         public static final double JOYSTICK_SENSE = 0.05;
         public static final float TRIGGER_SENSE = 0.2f;
     }
+    public static class CLIMB {
+        public static final double heightsInCM = 30;
+    }
 }
