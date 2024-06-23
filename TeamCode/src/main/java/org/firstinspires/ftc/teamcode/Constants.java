@@ -9,7 +9,7 @@ public class Constants {
         public static final double DRIVE_GEAR_REDUCTION = 1.0; // No external gearing
         public static final double WHEEL_DIAMETER_INCHES = 3.54;
         public static final double COUNTS_PER_INCH = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) / (WHEEL_DIAMETER_INCHES * Math.PI);
-        public static final double ABOUT_TO_MAKE_CONTACT_DISTANCE = 15; // cm
+        public static final double ABOUT_TO_MAKE_CONTACT_DISTANCE = 14; // cm
 
         // (Optional) Distance sensor with Kalman filter
         public static final double K_Q = 0.3; // High values put more emphasis on the sensor.
