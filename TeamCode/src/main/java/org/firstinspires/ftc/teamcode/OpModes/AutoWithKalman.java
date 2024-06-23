@@ -1,21 +1,22 @@
 package org.firstinspires.ftc.teamcode.OpModes;
 
+import static org.firstinspires.ftc.teamcode.Constants.CLIMB.CLIMBER_MAX_CURRENT;
+import static org.firstinspires.ftc.teamcode.Constants.CLIMB.CLIMBER_MIN_TICKS;
+import static org.firstinspires.ftc.teamcode.Constants.SPEED.BASE_SPEED;
+import static org.firstinspires.ftc.teamcode.Constants.SPEED.CLIMBER_SPEED;
+
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.teamcode.Subsystems.Climber;
 import org.firstinspires.ftc.teamcode.Subsystems.AutoDriveSystem;
-//import org.firstinspires.ftc.teamcode.Subsystems.DriveController;
+import org.firstinspires.ftc.teamcode.Subsystems.Climber;
 import org.firstinspires.ftc.teamcode.Subsystems.TankDrive;
 
-import static org.firstinspires.ftc.teamcode.Constants.SPEED.*;
-import static org.firstinspires.ftc.teamcode.Constants.CLIMB.*;
-
-@Autonomous(name = "Auto")
-public class Auto extends LinearOpMode {
+@Autonomous(name = "Auto with filtered distance sensor")
+public class AutoWithKalman extends LinearOpMode {
     private ElapsedTime runtime = new ElapsedTime();
-    TankDrive drive = new TankDrive(this);
+    TankDrive drive = new TankDrive(this, true);
     AutoDriveSystem autoDriveSystem = new AutoDriveSystem(drive, runtime, this);
     //DriveController driveController = new DriveController(this);
     Climber climber = new Climber(this);

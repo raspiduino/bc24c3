@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.Subsystems;
 
+import com.ThermalEquilibrium.homeostasis.Filters.FilterAlgorithms.KalmanFilter;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import com.qualcomm.robotcore.hardware.ColorSensor;
@@ -7,13 +8,14 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.IMU;
 
+import org.checkerframework.checker.units.qual.K;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
-import static org.firstinspires.ftc.teamcode.Constants.BASE.COUNTS_PER_INCH;
+import static org.firstinspires.ftc.teamcode.Constants.BASE.*;
 
 public class Drivebase {
     public DcMotorEx        leftMotor;
@@ -21,18 +23,23 @@ public class Drivebase {
     public ColorSensor      colorSensor;
     public DistanceSensor   distanceSensor;
     public IMU              imu;
+    public boolean          filterDistanceSensor;
+
+    private KalmanFilter filter = new KalmanFilter(K_Q, K_R, K_N);
 
     public void init(LinearOpMode opMode,
                 String leftMotor,
                 String rightMotor,
                 String colorSensor,
                 String distanceSensor,
-                String imu) {
+                String imu,
+                boolean filterDistanceSensor) {
         this.leftMotor       = (DcMotorEx)      opMode.hardwareMap.get(DcMotorEx.class, leftMotor);
         this.rightMotor      = (DcMotorEx)      opMode.hardwareMap.get(DcMotorEx.class, rightMotor);
         this.colorSensor     = (ColorSensor)    opMode.hardwareMap.get(ColorSensor.class, colorSensor);
         this.distanceSensor  = (DistanceSensor) opMode.hardwareMap.get(DistanceSensor.class, distanceSensor);
         this.imu             = (IMU)            opMode.hardwareMap.get(IMU.class, imu);
+        this.filterDistanceSensor = filterDistanceSensor;
 
         // Set motors' direction and mode
         this.leftMotor.setDirection(DcMotorEx.Direction.REVERSE);
@@ -59,7 +66,12 @@ public class Drivebase {
     }
     //TODO: Use Kalman Filter to effectively predict if the robot has made contacted or not
     public boolean aboutToMakeContact() {
-        return this.distanceSensor.getDistance(DistanceUnit.CM) <= 15;
+        double rawReading = this.distanceSensor.getDistance(DistanceUnit.CM);
+        if (!filterDistanceSensor) {
+            return rawReading <= ABOUT_TO_MAKE_CONTACT_DISTANCE;
+        }
+
+        return filter.estimate(rawReading) <= ABOUT_TO_MAKE_CONTACT_DISTANCE;
     }
     public double getHeading() {
         Orientation angles = this.imu.getRobotOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
